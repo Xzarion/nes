@@ -1,0 +1,22 @@
+\begin{thebibliography}{1}
+
+\bibitem{xilinxapp29}
+{\sc Alfke, P., and New, B.}
+\newblock {\em Xilinx Application Note 29: Serial Code Conversion between BCD
+  and Binary}, 27. October 1997.
+
+\bibitem{scancodedoc}
+{\sc Mock, B.}
+\newblock Keyboard scan code: Set 2.
+\newblock \url{http://www.marjorie.de/ps2/scancode-set2.htm}.
+\newblock Abgerufen am 19.~März 2010.
+
+\bibitem{ipcoredoc}
+{\sc Polzer, T., and Lechner, J.}
+\newblock {\em HW-Modeling IP Core Documentation}.
+\newblock ECS Group, TU Wien, 11. März 2010.
+\newblock
+  \url{http://ti.tuwien.ac.at/ecs/teaching/courses/hwmod/HwModeling/hwmod_ipco%
+res.pdf}.
+
+\end{thebibliography}

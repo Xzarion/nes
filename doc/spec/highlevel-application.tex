@@ -1,0 +1,80 @@
+\subsection{Abstracts}
+
+Our application is the well known game called \textit{Snake}, implemented
+in a distributed system consisting of four nodes, based on a simple field bus protocol.
+\subsubsection{Protocol}
+The protocol consist of one master and multiple slaves. The master sends synchronization bytes 
+and frame ID. If there is no answer after $\text{timeout} =\frac{\text{bits per byte}}
+{\text{baudrate}}+\text{delay}+\text{jitter}+\text{WCET} \text{ in ms}$ the next
+frame request is initiated. Moreover the master has to wait $\text{timeout}*k$ where
+$k$ is factor to guarantee that also all slaves have recognized the timeout.\\
+All nodes that are interested in a particular frame
+read the bus, wait for the sync. byte and the frame ID to start capturing the data.
+Each node may has assigned frame IDs which indicate that it will send data in the 
+given slot. Before reseting to the wait state at least on timout period must pass.\\
+The frame ID is followed by frame length, data and a checksum. \\
+In case of a timeout slaves wait for the next frame ( sync. byte and frame ID).
+In case of a checksum or parity error the message gets delivered with an failure
+indication. If the readback data differs from the senddata the node stops transmitting 
+and waits for the next sync. byte and frame ID.
+
+\subsubsection{Basic Application}
+In the game the user has to navigate a snake to a treat without colliding
+with the snake itself or with the border of the field. Whenever the snake
+reaches such a treat it grows by the size of the treat. Furthermore a new
+treat is generated on a different position, but may not be placed on the
+snake's body. The snake moves with a constant speed, the user can only change
+the direction, immediate turnarounds are prohibited. At each treat the snake 
+collects the speed will be increased by a factor of $1.1$ and the user gains 
+one point. The game ends whenever the snake either collides with itself or
+with the border of the field. 
+
+\subsubsection{Role distribution}
+The previously described application will be implemented on a target platform
+consisting of four nodes. The communication between these nodes will be handled
+by a fieldbus protocol controlled by one single busmaster.
+\begin{description}
+\item[NODE 0:]
+Implements the busmaster and we use the two push buttons to control the up-down
+movement of our snake.
+\item[NODE 1:]
+Node 1 indicates the game state, consisting of running (lamp deactivated) or game over
+(lamp activated). Furthermore a optional goal of our application is to use the 
+temperature sensors, which can be influenced by the fan, to manipulated the speed
+of the snake. For example the cooler the temperature readings the slower the snake, until
+it freezes to death. 
+\item[NODE 2:]
+Implements the gamelogic and the graphical display on the TFT. The snake consists 
+simply of a bunch of boxes chained together to form a snake with a size of NxM 
+pixels each. At each gamestep this node paints a new box at the new head position
+of the snake and deletes the box at the old tail position. When the snake reaches
+a treat, the tail position will not be deleted and a new treat with the size of 
+one NxM box will be drawn on a random position. The duration between two snake 
+movements will be 500ms. The duration will be decreased to 454ms after the first
+acheived point and so on. The following subsection describes the required system
+messages.
+\item[NODE 3:]
+Node 3 contains a LED matrix, which will be used to display the current score. 
+Furthermore it offers two additional pushbuttons which will be used to control
+the left- and right direction of the snake.
+\end{description}
+
+ 
+
+\subsubsection{System messages}
+
+The following state-messages will be sent in the system:
+
+\begin{itemize}
+  \item \textbf{Node 0 sends BTN\_UP\_DOWN\_PRESSED to Node 2}
+  \item \textbf{Node 2 sends FREEZE\_LEVEL to Node 1}
+  \item \textbf{Node 2 sends DEAD to Node 1}
+  \item \textbf{Node 3 sends BTN\_LEFT\_RIGHT\_PRESSED to Node 2}
+  \item \textbf{Node 2 sends SCORE to Node 3}
+\end{itemize}
+
+Since all described messages are state messages, each of them must be sent and
+delivered between two consecutive game steps. The duration between such two 
+steps in the worst case decreases by factor $1/1.1$, so the end-to-end delay
+of one communication round must be bounded by 50ms to guarantee a fluent gameflow. 
+

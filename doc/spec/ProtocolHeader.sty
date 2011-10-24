@@ -1,0 +1,143 @@
+\lstset{ %
+language=vhdl,                % choose the language of the code
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+numbers=left,                   % where to put the line-numbers
+numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+stepnumber=1,                   % the step between two line-numbers. If it's 1 each line will be numbered
+numbersep=5pt,                  % how far the line-numbers are from the code
+backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+%frame=single,	                % adds a frame around the code
+tabsize=2,	                % sets default tabsize to 2 spaces
+captionpos=b,                   % sets the caption-position to bottom
+breaklines=true,                % sets automatic line breaking
+breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+escapeinside={\%*}{*)},         % if you want to add a comment within your code
+prebreak={\space\hbox{\ensuremath\hookleftarrow}}
+}
+
+%\setlength{\textheight}{9.3in}
+%\setlength{\textwidth}{6.8in}
+%\setlength{\columnsep}{0.3125in}
+%\setlength{\oddsidemargin}{-0.304in}
+%\setlength{\evensidemargin}{-0.304in}
+%\setlength{\topmargin}{0.2in}
+%\setlength{\headheight}{-0.1in}
+%\setlength{\headsep}{-0.1in}
+%\setlength{\footskip}{.5in}
+%\setlength{\parindent}{1pc}
+
+
+%\renewcommand{\floatpagefraction}{0.9}
+%\renewcommand{\textfraction}{0.05}
+%\renewcommand{\topfraction}{1.0}
+%\renewcommand{\bottomfraction}{1.0}
+
+%\setcounter{totalnumber}{3}
+%\setcounter{bottomnumber}{3}
+%\setcounter{topnumber}{3}
+
+%\setlength{\unitlength}{1mm}
+%\setlength{\parindent}{6mm}
+%\setlength{\parskip}{12pt plus2pt minus2pt}
+
+\sloppy
+\newcommand{\MakeTitleAndTOC}{
+  %-------------------------------------------------------------------------
+  % print title page
+  %-------------------------------------------------------------------------
+  \thispagestyle{empty}
+  ~ \\
+  ~ \\
+  \begin{center}
+  \noindent
+  {\Huge \bf 182.717/WS11 }\\
+  \vspace{.25cm}
+  {\Huge \bf VU Network Embedded Systems}\\
+
+  \vspace{2.5cm}
+  {\LARGE Spezifikation}
+  \end{center}
+ \vspace{2cm}
+  % Author
+  \begin{center}
+  \noindent
+  ~ \\
+  ~ \\
+  ~ \\
+  {\large Markus Hofst\"atter, MatrNr. 0725034, KNZ: 066 938}\\
+  {\small e0725034@student.tuwien.ac.at} \\
+  ~ \\
+  ~ \\
+  {\large Stefan Rebernig, MatrNr. 0726283, KNZ: 066 938}\\
+  {\small stefan.rebernig@gmail.com} \\
+  ~ \\
+  ~ \\
+  {\large Manfred Schwarz, MatrNr. 0725898, KNZ: 066 938}\\
+  {\small e0725898@student.tuwien.ac.at} \\
+  ~ \\
+  ~ \\
+  ~ \\
+  ~ \\
+  ~ \\
+  ~ \\
+  ~ \\
+  ~ \\
+  {\large \today}
+  \end{center}
+
+  \newpage
+
+  %-------------------------------------------------------------------------
+  % print table of contents
+  %-------------------------------------------------------------------------
+  \tableofcontents
+  \newpage
+
+}
+
+
+
+\newcommand{\mc}[1]{ {{\small \texttt{#1}}}}
+%%footnote hack von http://bushednotes.wordpress.com/2007/03/25/footnotes-tabular-in-latex/
+\newcounter{myfootertablecounter}
+
+\newcommand\myfootnotemark{%
+	%\refstepcounter{footnote}%
+		\addtocounter{footnote}{1}%
+		\footnotemark[\thefootnote]%
+}%
+
+\newcommand\myfootnotetext[1]{%
+	\addtocounter{myfootertablecounter}{1}
+	\footnotetext[\value{myfootertablecounter}]{#1}
+}
+
+% from now on, myfootnote has to be used rather than footnote to
+% adapt the myfootercounter
+\newcommand\myfootnote[1]{%
+	\addtocounter{myfootertablecounter}{1}
+	\footnote{#1}
+}%
+
+\newcommand{\fromReq}[1]{$\leftarrow$ \refReq{#1}}
+\newcommand{\req}[1]{\label{req:#1} \hfill \\}
+
+\newcommand{\refMod}[1]{\hyperref[module:#1]{Modul~\nameref{module:#1}}}
+\newcommand{\refMods}[1]{\hyperref[module:#1]{Moduls~\nameref{module:#1}}}
+\newcommand{\refFig}[1]{\hyperref[fig:#1]{Abbildung~\ref{fig:#1}}}
+\newcommand{\refTab}[1]{\hyperref[tab:#1]{Tabelle~\ref{tab:#1}}}
+\newcommand{\refReq}[1]{\hyperref[req:#1]{Req.~\ref{req:#1}}}
+\newcommand{\refReqL}[1]{\hyperref[req:#1]{Requirement~\ref{req:#1}}}
+\newcommand{\visspace}{\, \text\textvisiblespace \,}
+
+\newcommand{\logicblock}[1]{ Der Logic Block dieses Moduls ist in \refFig{lb_#1} ersichtlich.
+\begin{figure}[!ht]
+ \includegraphics{../quartus/logicblocks/#1.pdf}
+ \centering
+ \caption{Logic Block von \refMod{#1}}
+ \label{fig:lb_#1}
+\end{figure}
+}
