@@ -1,6 +1,6 @@
 SHELL := bash
 
-FILES  = Protocol.tex highlevel-application.tex
+FILES  = Protocol.tex highlevel-application.tex requirements.tex
 FILES += ProtocolHeader.sty Makefile
 TARGET = nesspecc.pdf
 

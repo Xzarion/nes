@@ -68,7 +68,7 @@ The following state-messages will be sent in the system:
 \begin{itemize}
   \item \textbf{Node 0 sends BTN\_UP\_DOWN\_PRESSED to Node 2}
   \item \textbf{Node 2 sends FREEZE\_LEVEL to Node 1}
-  \item \textbf{Node 2 sends DEAD to Node 1}
+  \item \textbf{Node 2 sends DEAD\_LEVEL to Node 1}
   \item \textbf{Node 3 sends BTN\_LEFT\_RIGHT\_PRESSED to Node 2}
   \item \textbf{Node 2 sends SCORE to Node 3}
 \end{itemize}
@@ -77,4 +77,9 @@ Since all described messages are state messages, each of them must be sent and
 delivered between two consecutive game steps. The duration between such two 
 steps in the worst case decreases by factor $1/1.1$, so the end-to-end delay
 of one communication round must be bounded by 50ms to guarantee a fluent gameflow. 
-
+\subsection{Requirement Specification}
+\input{requirements}
+\subsection{Submodules and Interfaces}
+The Submodules equal the single nodes on the target, where the behavior of the interfaces equal 
+the messages defined in the System message section. The detailed driver interfaces will
+get specified through the c headers later one.
