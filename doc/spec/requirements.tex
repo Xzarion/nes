@@ -1,0 +1,69 @@
+\subsubsection{Protocol requirements}
+
+\begin{enumerate}[\bfseries{Req.} 1]
+\item \req{master} One node obtains the master role, which statically assigned.
+\item \fromReq{master} \req{slave}All nodes are assigned a slave role(again statically assigned).
+\item \req{traffic} The master controls all traffic on the bus.
+\item \fromReq{traffic} \req{slave_sending} Slaves can not send without a request from the master.
+\item \fromReq{slave_sending} \req{request} A request consists of a sync. byte and
+a frame identifier(will be referred as frame ID) . 
+\item \fromReq{request} \req{frameID} The length of the frame ID is one byte.
+\item \fromReq{slave_sending} \req{data} The slave answer consists of a byte 
+indicating the length of the data, the data bytes it self and checksum.
+\item \fromReq{data} \req{crc} A checksum is 8 bits long. % TODO: wie berechnen wir das ?
+\item \fromReq{master} \req{request_beh} The master rotates through all frame IDs
+and switches to the next frame ID either when frame transmission is complete or
+a timeout occurred. 
+\item \fromReq{slave} \req{slave_beh} After the slave timeout duration is expired
+the slave waits for a new request from the master. 
+\item \fromReq{request_beh} \req{round_timeout} After each round a master timeout
+period is waited before the next round is initiated.
+\item \fromReq{request_beh} \req{timeout_master} A timeout duration for the master is
+$\frac{\text{bits per byte}}{\text{baudrate}}*2.5$
+\item \fromReq{data} \req{timeout_slave} A timeout duration for all slaves is
+$\frac{\text{bits per byte}}{\text{baudrate}}*2$
+\item \fromReq{request_beh} \req{timeout_counter} The timeout counter gets reseted
+after a correct byte is received.
+\item  \req{receive_failure} If a late byte or a incorrect byte has been received a new
+timeout period gets initiated.
+\item  \req{readback} If a sending node recognizes a incorrect transmission (read back)
+it aborts the transmission and waits for the next master request.
+\item \fromReq{readback} \req{retransmission} After a faulty transmission no 
+retransmission is initiated.
+\subsubsection{Application requirements}
+\item  \req{the_game} The application implements the game {\it Snake}.
+\item \fromReq{the_game} \req{node0} Implements the bus master plus the sends the
+switch states if requested.
+\item \fromReq{node0} \req{switch0} The switches at node 0 control the up and down
+movement of the snake.
+\item \fromReq{switch0} \fromReq{switch3} \req{switch_buf} The switch states get buffered till
+the state is send once, faulty or not. 
+\item \fromReq{the_game} \req{node1} The lamp on node 1 indicates how close
+the head of the snake is to an obstacle, in respect to the moving direction.
+\item \fromReq{node1} \req{lamp} The lamp has 3 indicating levels.
+\item \fromReq{lamp} \req{levels}
+\begin{itemize}
+\item Level 1: The lamp doesn't glow if the head is more than 3 boxes away.
+\item Level 2: The lamp blinks 2 times a second if the head is closer then 3 boxes and at least 1 box away.
+\item Level 3: The lamp permanently glows if the head collides with the obstacle (equals game over).
+\end{itemize}
+\item \fromReq{node1} \req{tempsens} Optional: The temperature sensor influences
+ the movements speed  of the snake.
+\item \fromReq{tempsens} \req{movement} Optional: The cooler the measured temperature is the
+slower the snake moves.
+\item \fromReq{node1} \req{fan} Optional: If after a duration of 5 seconds, the snake
+hasn't eaten a token, the fan speed gets increased.
+\item \fromReq{fan} \req{speed} Optional: The fan speed can be increase in 4 equal levels.
+\item \fromReq{tempsens} \req{freeze} Optional: If the snake experiences the lowest
+temperature level it dies (equals game over).
+\item \fromReq{the_game} \req{node2} Implements the game behavior of snake.
+\item \fromReq{node2} \req{LCD} The LCD is used to implement the game display without the score.
+\item \fromReq{the_game} \req{node3} Implements the score representation on the LED- matrix 
+and the switch states are send if requested.
+\item \fromReq{node3} \req{score} The maximum score is 999999.
+\item \fromReq{node3} \req{switch3} The switches at node 3 control the left and right
+movement of the snake.
+\item \fromReq{the_game} \req{message_delays} One round of the bus master has to be
+finished, in the correct, but worst case, in 50ms. 
+\item \fromReq{the_game} \req{movmentspeed} The maximum movement speed is 20 boxes per second.
+\end{enumerate}
